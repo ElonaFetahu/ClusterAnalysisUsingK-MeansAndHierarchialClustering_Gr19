@@ -4,17 +4,17 @@ This project was developed as part of a semester course at the University "Hasan
 
 # Introduction
 Clustering is a fundamental technique in unsupervised machine learning, used to group similar data points into clusters. This project provides an intuitive tool for performing clustering using two methods:
-K-Means Clustering: A partition-based algorithm that iteratively assigns data points to clusters based on their proximity to cluster centroids.
-Hierarchical Clustering: A tree-based approach that creates a hierarchy of clusters, visualized using a dendrogram.
+- K-Means Clustering: A partition-based algorithm that iteratively assigns data points to clusters based on their proximity to cluster centroids.
+- Hierarchical Clustering: A tree-based approach that creates a hierarchy of clusters, visualized using a dendrogram.
 This Python application includes both algorithms and offers visualizations to help understand the clustering results.
 
 # How It Works
 The application provides the following features:
 Algorithm Selection: Users can choose between K-Means and Hierarchical Clustering.
-Input Data:
+- Input Data:
 Users can upload a dataset containing data points.
 Alternatively, users can generate synthetic data for testing.
-Cluster Configuration:
+- Cluster Configuration:
 Specify the number of clusters for K-Means.
 Choose the linkage method (e.g., single, complete, average) for Hierarchical Clustering.
 Distance Metrics: Select distance metrics such as Euclidean or Manhattan.
@@ -47,18 +47,18 @@ python main.py
 Follow the GUI prompts to select your clustering algorithm, upload data, and visualize the results.
 
 # Contributors
-Agnesa Mani
-Elona Fetahu
-Venesa Fejza
-Rona Tasholli
+- Agnesa Mani
+- Elona Fetahu
+- Venesa Fejza
+- Rona Tasholli
 
 # Technical Documentation
-K-Means Algorithm
+- K-Means Algorithm
 Initialization: Choose initial centroids randomly.
 Assignment Step: Assign each data point to the nearest centroid.
 Update Step: Recalculate centroids as the mean of assigned points.
 Repeat until centroids stabilize or maximum iterations are reached.
-Hierarchical Clustering Algorithm
+- Hierarchical Clustering Algorithm
 Step 1: Compute the distance matrix for all data points.
 Step 2: Merge the closest points or clusters iteratively.
 Step 3: Generate a dendrogram to visualize the hierarchy.
