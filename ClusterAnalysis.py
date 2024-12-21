@@ -87,3 +87,36 @@ def main():
         except ValueError:
             messagebox.showerror("Error", "Invalid input. Please enter coordinates as x,y.")
             return
+
+data = np.array(data)
+
+    # Select clustering method
+    method = simpledialog.askstring("Clustering Method", "Choose method: kmeans or hierarchical:")
+    if method not in ["kmeans", "hierarchical"]:
+        messagebox.showerror("Error", "Invalid method. Please choose 'kmeans' or 'hierarchical'.")
+        return
+
+    if method == "kmeans":
+        # Number of clusters
+        n_clusters = simpledialog.askinteger("Clusters", "Enter the number of clusters:", minvalue=2, maxvalue=n_points)
+        labels, centers = kmeans_clustering(data, n_clusters)
+        plot_kmeans_clusters(data, labels, centers)
+
+    elif method == "hierarchical":
+        # Select distance metric
+        metric = simpledialog.askstring("Metric", "Enter distance metric (euclidean/manhattan):")
+        if metric not in ["euclidean", "manhattan"]:
+            messagebox.showerror("Error", "Invalid metric. Please choose 'euclidean' or 'manhattan'.")
+            return
+
+        # Select linkage method
+        linkage_method = simpledialog.askstring("Linkage", "Enter linkage method (ward/single/complete/average):")
+        if linkage_method not in ["ward", "single", "complete", "average"]:
+            messagebox.showerror("Error", "Invalid linkage method.")
+            return
+
+        labels = hierarchical_clustering(data, method=linkage_method, metric=metric)
+        plot_hierarchical_clusters(data, labels, linkage_method, metric)
+
+if __name__ == "__main__":
+    main()
