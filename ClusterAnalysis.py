@@ -26,3 +26,31 @@ def hierarchical_clustering(data, n_clusters=None, method="ward", metric="euclid
 # Plot K-Means Clusters
 def plot_kmeans_clusters(data, labels, centers):
     plt.figure(figsize=(8, 6))
+    # Define symbols and colors for each cluster
+    markers = ['+', '*', 'o']
+    colors = ['red', 'blue', 'green']
+
+    for cluster in range(len(np.unique(labels))):
+        cluster_points = data[labels == cluster]
+        plt.scatter(cluster_points[:, 0], cluster_points[:, 1], 
+                    color=colors[cluster % len(colors)], 
+                    marker=markers[cluster % len(markers)], 
+                    label=f'Cluster {cluster + 1}', edgecolor='k')
+
+    plt.scatter(centers[:, 0], centers[:, 1], c="black", s=200, marker="X", label="Centroids")
+    plt.title("K-Means Clusters")
+    plt.xlabel("Feature 1")
+    plt.ylabel("Feature 2")
+    plt.legend(loc="upper right")
+    plt.show()
+
+# Plot Hierarchical Clusters and Dendrogram
+def plot_hierarchical_clusters(data, labels=None, method="ward", metric="euclidean"):
+    plt.figure(figsize=(12, 6))
+
+    # Plot the dendrogram
+    if metric != "euclidean":
+        distance_matrix = pairwise_distances(data, metric=metric)
+        Z = linkage(distance_matrix, method=method)
+    else:
+        Z = linkage(data, method=method)
