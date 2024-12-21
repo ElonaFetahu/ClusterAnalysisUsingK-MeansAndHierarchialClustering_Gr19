@@ -26,6 +26,7 @@ def hierarchical_clustering(data, n_clusters=None, method="ward", metric="euclid
 # Plot K-Means Clusters
 def plot_kmeans_clusters(data, labels, centers):
     plt.figure(figsize=(8, 6))
+<<<<<<< Updated upstream
     # Define symbols and colors for each cluster
     markers = ['+', '*', 'o']
     colors = ['red', 'blue', 'green']
@@ -120,3 +121,6 @@ data = np.array(data)
 
 if __name__ == "__main__":
     main()
+=======
+
+>>>>>>> Stashed changes
