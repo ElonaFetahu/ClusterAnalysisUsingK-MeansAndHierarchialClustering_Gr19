@@ -26,7 +26,7 @@ def hierarchical_clustering(data, n_clusters=None, method="ward", metric="euclid
 # Plot K-Means Clusters
 def plot_kmeans_clusters(data, labels, centers):
     plt.figure(figsize=(8, 6))
-<<<<<<< Updated upstream
+
     # Define symbols and colors for each cluster
     markers = ['+', '*', 'o']
     colors = ['red', 'blue', 'green']
@@ -55,8 +55,8 @@ def plot_hierarchical_clusters(data, labels=None, method="ward", metric="euclide
         Z = linkage(distance_matrix, method=method)
     else:
         Z = linkage(data, method=method)
-        
-plt.subplot(1, 2, 1)
+
+    plt.subplot(1, 2, 1)
     dendrogram(Z, truncate_mode="level", p=4)
     plt.title("Hierarchical Clustering Dendrogram")
     plt.xlabel("Sample Index")
@@ -89,7 +89,7 @@ def main():
             messagebox.showerror("Error", "Invalid input. Please enter coordinates as x,y.")
             return
 
-data = np.array(data)
+    data = np.array(data)
 
     # Select clustering method
     method = simpledialog.askstring("Clustering Method", "Choose method: kmeans or hierarchical:")
@@ -120,7 +120,4 @@ data = np.array(data)
         plot_hierarchical_clusters(data, labels, linkage_method, metric)
 
 if __name__ == "__main__":
-    main()
-=======
-
->>>>>>> Stashed changes
+    main() 
