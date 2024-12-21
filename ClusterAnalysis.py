@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 from sklearn.cluster import KMeans, AgglomerativeClustering
 from scipy.cluster.hierarchy import dendrogram, linkage
 from sklearn.metrics import pairwise_distances
@@ -15,30 +16,33 @@ def kmeans_clustering(data, n_clusters):
 # Hierarchical Clustering
 def hierarchical_clustering(data, n_clusters=None, method="ward", metric="euclidean"):
     if metric != "euclidean":
+        # Calculate pairwise distance matrix for non-euclidean metrics
         distance_matrix = pairwise_distances(data, metric=metric)
-        clustering = AgglomerativeClustering(n_clusters=n_clusters, linkage=method, affinity="precomputed")
+        clustering = AgglomerativeClustering(n_clusters=n_clusters, linkage=method, metric="precomputed")
         labels = clustering.fit_predict(distance_matrix) if n_clusters else None
     else:
         clustering = AgglomerativeClustering(n_clusters=n_clusters, linkage=method)
         labels = clustering.fit_predict(data) if n_clusters else None
     return labels
 
-# Plot K-Means Clusters
+# Plot K-Means Clusters with unique colors for each cluster
 def plot_kmeans_clusters(data, labels, centers):
     plt.figure(figsize=(8, 6))
 
-    # Define symbols and colors for each cluster
-    markers = ['+', '*', 'o']
-    colors = ['red', 'blue', 'green']
-
+    # Generate a list of unique colors using the "tab20" colormap (good for many distinct colors)
+    unique_colors = list(mcolors.TABLEAU_COLORS.values())  # You can also try other colormaps like 'tab20'
+    
+    # Loop through the unique labels (clusters) and plot each cluster with a different color
     for cluster in range(len(np.unique(labels))):
         cluster_points = data[labels == cluster]
         plt.scatter(cluster_points[:, 0], cluster_points[:, 1], 
-                    color=colors[cluster % len(colors)], 
-                    marker=markers[cluster % len(markers)], 
-                    label=f'Cluster {cluster + 1}', edgecolor='k')
+                    color=unique_colors[cluster % len(unique_colors)], 
+                    marker='o', label=f'Cluster {cluster + 1}', edgecolor='k')
 
+    # Plot the centroids with a distinct color (black)
     plt.scatter(centers[:, 0], centers[:, 1], c="black", s=200, marker="X", label="Centroids")
+    
+    # Title and labels
     plt.title("K-Means Clusters")
     plt.xlabel("Feature 1")
     plt.ylabel("Feature 2")
@@ -79,6 +83,8 @@ def main():
 
     # Input data points
     n_points = simpledialog.askinteger("Input", "Enter the number of data points:", minvalue=3, maxvalue=300)
+    if n_points is None:
+        return  # User canceled input
     data = []
     for i in range(n_points):
         point = simpledialog.askstring("Input", f"Enter coordinates for point {i+1} (e.g., x,y):")
@@ -99,7 +105,9 @@ def main():
 
     if method == "kmeans":
         # Number of clusters
-        n_clusters = simpledialog.askinteger("Clusters", "Enter the number of clusters:", minvalue=2, maxvalue=n_points)
+        n_clusters = simpledialog.askinteger("Clusters", "Enter the number of clusters:", minvalue=2)
+        if n_clusters is None:
+            return  # User canceled input
         labels, centers = kmeans_clustering(data, n_clusters)
         plot_kmeans_clusters(data, labels, centers)
 
@@ -111,13 +119,20 @@ def main():
             return
 
         # Select linkage method
-        linkage_method = simpledialog.askstring("Linkage", "Enter linkage method (ward/single/complete/average):")
-        if linkage_method not in ["ward", "single", "complete", "average"]:
-            messagebox.showerror("Error", "Invalid linkage method.")
-            return
+        if metric == "euclidean":
+            linkage_method = simpledialog.askstring("Linkage", "Enter linkage method (single/ward/complete/average):")
+            if linkage_method not in ["single", "ward", "complete", "average"]:
+                messagebox.showerror("Error", "Invalid linkage method.")
+                return
+        elif metric == "manhattan":
+            linkage_method = simpledialog.askstring("Linkage", "Enter linkage method (single/complete/average):")
+            if linkage_method not in ["single", "complete", "average"]:
+                messagebox.showerror("Error", "Invalid linkage method.")
+                return
 
         labels = hierarchical_clustering(data, method=linkage_method, metric=metric)
         plot_hierarchical_clusters(data, labels, linkage_method, metric)
 
 if __name__ == "__main__":
-    main() 
+    main()
+
