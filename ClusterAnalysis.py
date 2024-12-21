@@ -54,3 +54,36 @@ def plot_hierarchical_clusters(data, labels=None, method="ward", metric="euclide
         Z = linkage(distance_matrix, method=method)
     else:
         Z = linkage(data, method=method)
+        
+plt.subplot(1, 2, 1)
+    dendrogram(Z, truncate_mode="level", p=4)
+    plt.title("Hierarchical Clustering Dendrogram")
+    plt.xlabel("Sample Index")
+    plt.ylabel("Distance")
+
+    # Plot the clusters if labels are provided
+    if labels is not None:
+        plt.subplot(1, 2, 2)
+        plt.scatter(data[:, 0], data[:, 1], c=labels, cmap="viridis", marker="o", edgecolor="k")
+        plt.title("Hierarchical Clusters")
+        plt.xlabel("Feature 1")
+        plt.ylabel("Feature 2")
+
+    plt.tight_layout()
+    plt.show()
+
+# Main Application
+def main():
+    Tk().withdraw()  # Hide root tkinter window
+
+    # Input data points
+    n_points = simpledialog.askinteger("Input", "Enter the number of data points:", minvalue=3, maxvalue=300)
+    data = []
+    for i in range(n_points):
+        point = simpledialog.askstring("Input", f"Enter coordinates for point {i+1} (e.g., x,y):")
+        try:
+            x, y = map(float, point.split(","))
+            data.append([x, y])
+        except ValueError:
+            messagebox.showerror("Error", "Invalid input. Please enter coordinates as x,y.")
+            return
